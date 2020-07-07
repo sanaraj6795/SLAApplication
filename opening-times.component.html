@@ -1,0 +1,72 @@
+<div style="padding-left:25px;padding-right: 25px;min-height: 80vh;padding-top: 20px;margin-bottom:35px">
+  <div style="margin-top:10px">
+    <h2>Please enter your call center opening times below:</h2>
+  </div>
+  <div class="container" style="margin-top: 15px;padding-left: 1px;padding-top:10px" *ngIf="openingTimesModel">
+    <div class="row">
+      <div class="col-sm-12 col-md-7 col-lg-4">
+        <h6>Do you want to enable time-of-day settings?</h6>
+      </div>
+      <div class="col-sm-12 col-md-5 col-lg-8" id="openingTimesModel.enableTimeOfDaySettings">
+        <input type="radio" [(ngModel)]="openingTimesModel.enableTimeOfDaySettings"
+          name="openingTimesModel.enableTimeOfDaySettings" [value]="true">Yes
+        <input type="radio" [(ngModel)]="openingTimesModel.enableTimeOfDaySettings"
+          name="openingTimesModel.enableTimeOfDaySettings" [value]="false">No
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive" style="padding-top: 5px;" *ngIf="openingTimesModel">
+    <table class="table table-striped" style="justify-content: center;margin-top:25px; background-color:white;">
+      <thead>
+        <tr>
+          <th scope="col">Day</th>
+          <th scope="col">Starting Time</th>
+          <th scope="col">Ending Time</th>
+          <th scope="col">Close Today?</th>
+          <th scope="col">Enable overflow?</th>
+          <th scope="col">Overflow end time</th>
+          <th scope="col">Overflow to Queue or number?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let day of days;let i= index" scope="row">
+          <td>{{day}}</td>
+          <td>
+            <div class="ngx-timepicker">
+              <ngx-timepicker-field [format]="24" [(ngModel)]="openingTimesModel.openingTimesData[i].start"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings"></ngx-timepicker-field>
+            </div>
+          </td>
+          <td>
+            <div class="ngx-timepicker">
+              <ngx-timepicker-field [format]="24" [(ngModel)]="openingTimesModel.openingTimesData[i].end"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings"></ngx-timepicker-field>
+            </div>
+          </td>
+          <td><input type="checkbox" [(ngModel)]="openingTimesModel.openingTimesData[i].closed"
+              [disabled]="!openingTimesModel.enableTimeOfDaySettings"></td>
+          <td><input type="checkbox" [(ngModel)]="openingTimesModel.openingTimesData[i].overflow"
+              [disabled]="!openingTimesModel.enableTimeOfDaySettings"></td>
+          <td>
+            <div class="ngx-timepicker">
+              <ngx-timepicker-field [format]="24" [(ngModel)]="openingTimesModel.openingTimesData[i].overflowEnd"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings"></ngx-timepicker-field>
+            </div>
+          </td>
+          <td>
+            <div>
+              <input type="radio" [(ngModel)]="openingTimesModel.openingTimesData[i].route"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings" [name]="openingTimesModel.openingTimesData[i]" [value]="true">Queue
+              <input type="radio" [(ngModel)]="openingTimesModel.openingTimesData[i].route"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings" [name]="openingTimesModel.openingTimesData[i]" [value]="false">number
+              <input type="text" [(ngModel)]="openingTimesModel.openingTimesData[i].csq"
+                [disabled]="!openingTimesModel.enableTimeOfDaySettings">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn" type="button" (click)="updateOpeningTimes()"
+    style="background-color: #e2542f;color: white;margin-top:15px">Save</button>
+</div>
